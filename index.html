@@ -142,7 +142,7 @@
 
 <h3 id="the-timeline-and-the-highlights">Any subsection</h3>
 
-<p>If you need to explain more about your figure</p>
+<p>Example task with associated objects</p>
 
 <hr>
 
@@ -152,21 +152,22 @@
 <b>What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.</b>
 </p>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Our problem is we wanted to use natural language to allow a robot to perform complex tasks.
 </p>
 
 <p>
 <b>How is it done today, and what are the limits of current practice?</b>
 </p>
 <p>
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Using LLMs to actuate robotic arms are being used, but they are often limited in the complexity of the task.
 <p>
 
 <p>
 <b>Who cares? If you are successful, what difference will it make?</b>
 </p>
 <p>
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+If we are successful, this could be a simple framework for non-robotics experts to actuate a robotic arm. This could 
+also save experts time to focus on more difficult or novel tasks.
 </p>
 
 <hr>
@@ -178,7 +179,10 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 </p>
 
 <p>
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Our approach was to create a data structure that could handle objects in an environment with action strings associated with each object (i.e. "open", "close", "move_to").
+In this way, complex tasks could be broken down into simple language for the LLM which should decrease the output errors.
+As we did more research on the VAE, we realized that the output of the VAE (joint angles) would be incompatable with what the LLM portion of the system was trying to accomplish (task sequencing).
+This coupled with the time and resource-intensive data collection for the VAE led us to abandon it.
 </p>
 
 <p>
@@ -186,7 +190,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 </p>
 
 <p>
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+One problem we encountered was that the LLM doesn't always do the task sequencing completely (in one trial with Gemini, it forgot to add a second slice of bread).
+The opposite problem also occurred, where it added a sequence too completely (it used all available objects to a sandwich sequence,
+combining peanut butter and jelly with ham, mustard, and pickles). It seems that without very careful prompting, the LLM is susceptible to
+both logic errors and not using "common sense" reasoning.
 </p>
 
 <hr>
