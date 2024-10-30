@@ -1,0 +1,12 @@
+title: Robo NLP UMN CSCI 5541
+description: Project site for CSCI 5541
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://joelisk.github.io/umn-csci5541-f24-robonlp/" # the base hostname & protocol for your site
+# theme: minima # or any other theme you are using
+# Exclude these files from the build process
+exclude:
+  - README.md
+
+# Include these files in the build process
+include:
+  - /docs
