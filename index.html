@@ -216,6 +216,15 @@
   In the initial idea of this framework, we want to integrate the LLMs and Variational autoencoder (VAE) to directly generate trajectories for the manipulator to execute. However, we found out it is time-consuming to collect data to train the VAE, and the LLMs are not reliable when they are asked to generate continuous trajectories, and it is hard to let the model understand all the spatial information. Hence, we decided to run the current approach at a very early stage since this problem is predictable. The other problem we encountered was we initially wanted to make the responses from the LLMs in JSON form in order to unify the output format. However, it actually makes it hard to write a Python script to read the output, so we decided to make the response in Python list format.
 </p>
 
+<p>
+  <b>
+    Experiment Setup
+  </b>
+  <p>
+    For each of the tasks, we used three different prompts from RLBench with two different prompting strategies (one-shot vs chain-of-thought + one-shot). We used a COLAB script to generate output from eight different LLMs.
+  </p>
+</p>
+
 <br>
 <p>
   <b>Task Prompts</b>
