@@ -1,0 +1,154 @@
+```
+
+
+One-Shot template: 
+user_prompt = """You can perform the following actions:
+
+                    go_to(target): Controls the end effector of the robot arm to move to the target object and position itself directly above the target, maintaining a vertical alignment.
+
+                    pick_up(target): Opens the gripper, then controls the end effector of the robot arm to approach the target object vertically from above. Once the end effector reaches the target, it closes the gripper to securely grasp and lift the object.
+
+                    drop_to(target): Assumes the gripper is already picked up an object using the pick_up(target) action. Controls the end effector of the robot arm to approach the target object or location vertically from above. Once positioned, the gripper opens to release the object, and the end effector retracts, leaving the object at the target location.
+
+                    If I ask “Stack the blocks in the following order - blue_block at the bottom, red_block in the middle, and green_block at the top ”. Your response should be a list in the following format
+
+                    [{'action': 'go_to', 'target': 'red_block'}, {'action': 'pick_up', 'target': 'red_block '}, {'action': 'go_to', 'target': 'blue_block'}, {'action': 'drop_to', target': 'blue_block '}, {'action': 'go_to', 'target': 'green_block'}, {'action': 'pick_up', 'target': 'green_block'}, {'action': 'go_to', 'target': 'red_block'}, {'action': 'drop_to', 'target': 'red_block'}]
+                    
+                    Remeber, only give the action list as the example, I don't need any other suggestion and explaination.
+                    
+                    Stack three blocks in a pyramid"""
+
+system_prompt = """You are a robot arm action planner working with blocks in the environment, 
+                    the environment include three block as the object: red block with number one, green block with number two, blue block with one three. 
+                    The environment also include four location: pyramid_base_left (one of the the bottom layer of the pyramid), pyramid_base_right (one of the the bottom layer of the pyramid), pyramid_top (the last layer of the pyramid, on top of other blocks), target_center (a target location, no object on it initially).
+                    You can also consider the location of a object as a location of target."""
+
+##############################################################################################################################
+
+One-Shot+Chain-of-thoughts template：
+
+user_prompt = """You can perform the following actions:
+
+                    go_to(target): Controls the end effector of the robot arm to move to the target object and position itself directly above the target, maintaining a vertical alignment.
+
+                    pick_up(target): Opens the gripper, then controls the end effector of the robot arm to approach the target object vertically from above. Once the end effector reaches the target, it closes the gripper to securely grasp and lift the object.
+
+                    drop_to(target): Assumes the gripper is already picked up an object using the pick_up(target) action. Controls the end effector of the robot arm to approach the target object or location vertically from above. Once positioned, the gripper opens to release the object, and the end effector retracts, leaving the object at the target location.
+
+                    If I ask “Stack the blocks in the following order - blue_block at the bottom, red_block in the middle, and green_block at the top ”. Your response should be a list in the following format
+
+                    [{'action': 'go_to', 'target': 'red_block'}, {'action': 'pick_up', 'target': 'red_block '}, {'action': 'go_to', 'target': 'blue_block'}, {'action': 'drop_to', target': 'blue_block '}, {'action': 'go_to', 'target': 'green_block'}, {'action': 'pick_up', 'target': 'green_block'}, {'action': 'go_to', 'target': 'red_block'}, {'action': 'drop_to', 'target': 'red_block'}]
+                    
+                    Remeber, only give the action list as the example, I don't need any other suggestion and explaination.
+                    
+                    Stack three blocks in a pyramid"""
+
+system_prompt = """You are a robot arm action planner working with blocks in the environment, 
+                    the environment include three block as the object: red block with number one, green block with number two, blue block with one three. 
+                    The environment also include four location: pyramid_base_left (one of the the bottom layer of the pyramid), pyramid_base_right (one of the the bottom layer of the pyramid), pyramid_top (the last layer of the pyramid, on top of other blocks), target_center (a target location, no object on it initially).
+                    You can also consider the location of a object as a location of target."""
+
+
+##############################################################################################################################
+Change the last line of the User Prompt to each action prompts in the following.
+###############################################################################################################################
+
+
+
+action: lift_numbered_block
+
+prompts_list = ['pick up the block with the number 2', 
+          'grasp the block with the number 2 and lift the block‘,
+          'lift the block with the number 2']
+
+
+Ground truth：
+
+[
+  {'action': 'go_to', 'target': 'green_block'}，
+  {'action': 'pick_up', 'target': 'green_block'}
+]
+
+
+#################################################################################################################################
+
+Action: Build block_pyramid
+
+prompt_list = ['stack three blocks to a pyramid',
+                'create a pyramid with three blocks,
+                'make a pyramid out of three cubes',]
+
+# Note that this action is have more than one ground truth, as long as the output stack all the block together. 
+  And every action following the pair pattern: go_to->pick_up, go_to->drop_to with the same target object.
+  The order of the blocks doesn't matter.
+
+Ground truth：
+[
+  {'action': 'go_to', 'target': 'green_block'}, 
+  {'action': 'pick_up', 'target': 'green_block'}, 
+  {'action': 'go_to', 'target': 'pyramid_base_left'}, 
+  {'action': 'drop_to', 'target': 'pyramid_base_left'}, 
+  {'action': 'go_to', 'target': 'red_block'}, 
+  {'action': 'pick_up', 'target': 'red_block'}, 
+  {'action': 'go_to', 'target': 'pyramid_base_right'}, 
+  {'action': 'drop_to', 'target': 'pyramid_base_right'}, 
+  {'action': 'go_to', 'target': 'blue_block'}, 
+  {'action': 'pick_up', 'target': 'blue_block'}, 
+  {'action': 'go_to', 'target': 'pyramid_top'}, 
+  {'action': 'drop_to', 'target': 'pyramid_top'}
+]
+
+##################################################################################################################################
+
+Action: pick_and_lift
+
+prompt_list = ['pick up the red block and lift it up to the target center',
+                'grasp the red block to the target center',
+                'lift the red block up to the target center']
+
+
+Ground truth：
+
+[
+  {'action': 'go_to', 'target': 'red_block'}, 
+  {'action': 'pick_up', 'target': 'red_block'}, 
+  {'action': 'go_to', 'target': 'target_center'}, 
+  {'action': 'drop_to', 'target': 'target_center'}
+]
+
+###################################################################################################################################
+
+Action: Stack_blocks
+
+prompt_list = ['stack cubes on top of each other',
+                'pick up and set down blocks on top of each other',
+                'build a tall tower out of with cubes']
+
+# Note that this action is have more than one ground truth, as long as the output stack all the block together. 
+  And every action following the pair pattern: go_to->pick_up, go_to->drop_to with the same target object.
+
+
+[
+  {'action': 'go_to', 'target': 'blue_block'}, 
+  {'action': 'pick_up', 'target': 'blue_block'}, 
+
+  {'action': 'go_to', 'target': 'pyramid_base_left'}, 
+  {'action': 'drop_to', 'target': 'pyramid_base_left'}, 
+
+  {'action': 'go_to', 'target': 'red_block'}, 
+  {'action': 'pick_up', 'target': 'red_block'}, 
+
+  {'action': 'go_to', 'target': 'blue_block'}, 
+  {'action': 'drop_to', 'target': 'blue_block'}, 
+
+  {'action': 'go_to', 'target': 'green_block'}, 
+  {'action': 'pick_up', 'target': 'green_block'}, 
+
+  {'action': 'go_to', 'target': 'red_block'}, 
+  {'action': 'drop_to', 'target': 'red_block'}
+]
+
+
+maybe:
+slide_block_to_target
+```
