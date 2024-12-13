@@ -143,7 +143,7 @@
 <p class="sys-img"><img src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/CSCI5541_pipeline_final.png" alt="imgname"></p>
 
 
-<h3 id="the-timeline-and-the-highlights">Demo Video</h3>
+<h3 id="the-timeline-and-the-highlights">Some demo video for the framework completing tasks from <a href="https://github.com/stepjam/RLBench">RLBench benchmark</a></h3>
 
 <p>Picking:</p>
 
@@ -163,7 +163,7 @@
   <source src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/place.mp4" type="video/mp4">
 </video>
 
-<p>Stacking</p>
+<p>Stacking:</p>
 
 <video width="640" height="360" controls>
   <source src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/stack.mp4" type="video/mp4">
@@ -177,22 +177,21 @@
 <b>What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.</b>
 </p>
 <p>
-Our problem is we wanted to use natural language to allow a robot to perform complex tasks.
+  We propose a framework that integrates an LLM with a traditional trajectory planner to enable operators to command a robotic manipulator using natural human speech.
 </p>
 
 <p>
 <b>How is it done today, and what are the limits of current practice?</b>
 </p>
 <p>
-Using LLMs to actuate robotic arms are being used, but they are often limited in the complexity of the task.
+  LLMs are being used to actuate robotic arms, but they are often limited by the complexity of the task and have limited analysis of how model parameter size and different prompting techniques affect the performance of this kind of pipeline.
 <p>
 
 <p>
 <b>Who cares? If you are successful, what difference will it make?</b>
 </p>
 <p>
-If we are successful, this could be a simple framework for non-robotics experts to actuate a robotic arm. This could 
-also save experts time to focus on more difficult or novel tasks.
+  This work might contribute to the integration of the Human-Robot Interaction (HRI) field. We provide a potentially workable solution allowing non-expert operators to intuitively control the manipulator. This framework can be deployed on common workspace for humans and manipulators, so people from different backgrounds can all command the manipulator to do some tasks automatically to improve efficiency.
 </p>
 
 <hr>
@@ -204,10 +203,7 @@ also save experts time to focus on more difficult or novel tasks.
 </p>
 
 <p>
-Our approach was to create a data structure that could handle objects in an environment with action strings associated with each object (i.e. "open", "close", "move_to").
-In this way, complex tasks could be broken down into simple language for the LLM which should decrease the output errors.
-As we did more research on the VAE, we realized that the output of the VAE (joint angles) would be incompatable with what the LLM portion of the system was trying to accomplish (task sequencing).
-This coupled with the time and resource-intensive data collection for the VAE led us to abandon it.
+  We developed a framework where a large language model (LLM) transforms spoken English instructions—transcribed by Faster Whisper—into sequences of predefined robotic actions. Instead of having the LLM generate code or trajectories directly, we restrict it to choosing from modular commands like “pick_up,” “go_to,” and “drop_to.” These high-level actions are then executed by a Kinova Gen3 arm in a Gazebo simulation, guided by established motion planning tools like MoveIt. This setup allows the LLM to focus on natural language comprehension and logical planning while the proven robotic trajectory commander like MoveIt handles the complexity of execution. The approach is relatively new in that it integrates LLM-driven reasoning with fixed, reliable action “building blocks” and continuously updated environmental information via ROS, ultimately making the system more robust, flexible, and practical for real-world applications.
 </p>
 
 <p>
@@ -215,10 +211,7 @@ This coupled with the time and resource-intensive data collection for the VAE le
 </p>
 
 <p>
-One problem we encountered was that the LLM doesn't always do the task sequencing completely (in one trial with Gemini, it forgot to add a second slice of bread).
-The opposite problem also occurred, where it added a sequence too completely (it used all available objects to a sandwich sequence,
-combining peanut butter and jelly with ham, mustard, and pickles). It seems that without very careful prompting, the LLM is susceptible to
-both logic errors and not using "common sense" reasoning.
+  In the initial idea of this framework, we want to integrate the LLMs and Variational autoencoder (VAE) to directly generate trajectories for the manipulator to execute. However, we found out it is time-consuming to collect data to train the VAE, and the LLMs are not reliable when they are asked to generate continuous trajectories, and it is hard to let the model understand all the spatial information. Hence, we decided to run the current approach at a very early stage since this problem is predictable. The other problem we encountered was we initially wanted to make the responses from the LLMs in JSON form in order to unify the output format. However, it actually makes it hard to write a Python script to read the output, so we decided to make the response in Python list format.
 </p>
 
 <hr>
