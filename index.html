@@ -4,6 +4,9 @@
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NLP Class Project | Fall 2024 CSCI 5541 | University of Minnesota</title>
 
   <link rel="stylesheet" href="./docs/bulma.min.css" />
@@ -20,7 +23,7 @@
 <body>
   <div>
     <div class="wrapper">
-      <h1 style="font-family: &#39;Lato&#39;, sans-serif;">Using ChatGPT with Audio Processing for Robotic Manipulation</h1>
+      <h1 style="font-family: &#39;Lato&#39;, sans-serif;">Task Sequencing in Robotics using Large Language Models</h1>
       <h4 style="font-family: &#39;Lato&#39;, sans-serif; ">Fall 2024 CSCI 5541 NLP: Class Project - University of Minnesota</h4>
       <h4 style="font-family: &#39;Lato&#39;, sans-serif; ">RoboNLP</h4>
 
@@ -29,7 +32,7 @@
         <div class="author-container">
           <div class="author-image">
                         
-              <img src="">
+              <img height="325" width="325" src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/felix.jpg" alt="portrait">
             
             
           </div>
@@ -43,7 +46,7 @@
         <div class="author-container">
           <div class="author-image">
             
-            <img src="">
+            <img height="325" width="325" src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/he.jpg" alt="portrait">
             
           </div>
           <p>
@@ -56,7 +59,7 @@
         <div class="author-container">
           <div class="author-image">
             
-              <img src="">            
+              <img height="325" width="325" src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/fran.jpg" alt="portrait">            
             
           </div>
           <p>
@@ -129,20 +132,42 @@
     
     <h2 id="abstract">Abstract</h2>
 
-<p>One or two sentences on the motivation behind the problem you are solving. One or two sentences describing the approach you took. One or two sentences on the main result you obtained.</p>
+<p>Despite advancements in robotic capabilities, interaction with robotic manipulators remains constrained by the need for intricate programming and a lack of intuitive, non-manual control interfaces. Hence, we presents a framework for intuitive teleoperation of robotic manipulators through natural language commands, enabled by advancements in large language models (LLMs). We integrate an LLM-based action planner with a trajectory planner to interpret human speech and generate executable, sequential action plans for a simulated Kinova robotic arm. By evaluating eight LLMs with two prompting strategies on multiple tasks from the RLBench benchmark, we demonstrate the feasibility of translating natural language instructions into coherent, low-level manipulator actions without intricate manual programming. The system’s performance in a Gazebo-based simulation environment provides evidence that LLM-driven action sequencing can serve as a viable, accessible, and scalable approach to human-robot interaction, potentially broadening the utility of robotic assistance in complex, real-world scenarios.</p>
 
 <hr>
 
-<h2 id="teaser">Teaser Figure</h2>
+<h2 id="teaser">Pipeline Figure</h2>
 
-<p>A figure that conveys the main idea behind the project or the main application being addressed. This figure is from <a href="https://arxiv.org/pdf/2210.07469">StyLEx</a>.</p>
+<p> This whole pipeline of our proposed framework.</p>
 
-<p class="sys-img"><img src="./docs/assets/TaskDescription.jpeg" alt="imgname"></p>
+<p class="sys-img"><img src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/CSCI5541_pipeline_final.png" alt="imgname"></p>
 
 
-<h3 id="the-timeline-and-the-highlights">Any subsection</h3>
+<h3 id="the-timeline-and-the-highlights">Some demo video for the framework completing tasks from <a href="https://github.com/stepjam/RLBench">RLBench benchmark</a></h3>
 
-<p>Example task with associated objects</p>
+<p>Picking:</p>
+
+<video width="640" height="360" controls>
+  <source src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/pick_up.mp4" type="video/mp4">
+</video>
+
+<p>Building a pyramid:</p>
+
+<video width="640" height="360" controls>
+  <source src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/pyramid.mp4" type="video/mp4">
+</video>
+
+<p>Place:</p>
+
+<video width="640" height="360" controls>
+  <source src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/place.mp4" type="video/mp4">
+</video>
+
+<p>Stacking:</p>
+
+<video width="640" height="360" controls>
+  <source src="https://joelisk.github.io/umn-csci5541-f24-robonlp/docs/assets/stack.mp4" type="video/mp4">
+</video>
 
 <hr>
 
@@ -152,22 +177,21 @@
 <b>What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.</b>
 </p>
 <p>
-Our problem is we wanted to use natural language to allow a robot to perform complex tasks.
+  We propose a framework that integrates an LLM with a traditional trajectory planner to enable operators to command a robotic manipulator using natural human speech.
 </p>
 
 <p>
 <b>How is it done today, and what are the limits of current practice?</b>
 </p>
 <p>
-Using LLMs to actuate robotic arms are being used, but they are often limited in the complexity of the task.
+  LLMs are being used to actuate robotic arms, but they are often limited by the complexity of the task and have limited analysis of how model parameter size and different prompting techniques affect the performance of this kind of pipeline.
 <p>
 
 <p>
 <b>Who cares? If you are successful, what difference will it make?</b>
 </p>
 <p>
-If we are successful, this could be a simple framework for non-robotics experts to actuate a robotic arm. This could 
-also save experts time to focus on more difficult or novel tasks.
+  This work might contribute to the integration of the Human-Robot Interaction (HRI) field. We provide a potentially workable solution allowing non-expert operators to intuitively control the manipulator. This framework can be deployed on common workspace for humans and manipulators, so people from different backgrounds can all command the manipulator to do some tasks automatically to improve efficiency.
 </p>
 
 <hr>
@@ -179,10 +203,7 @@ also save experts time to focus on more difficult or novel tasks.
 </p>
 
 <p>
-Our approach was to create a data structure that could handle objects in an environment with action strings associated with each object (i.e. "open", "close", "move_to").
-In this way, complex tasks could be broken down into simple language for the LLM which should decrease the output errors.
-As we did more research on the VAE, we realized that the output of the VAE (joint angles) would be incompatable with what the LLM portion of the system was trying to accomplish (task sequencing).
-This coupled with the time and resource-intensive data collection for the VAE led us to abandon it.
+  We developed a framework where a large language model (LLM) transforms spoken English instructions—transcribed by Faster Whisper—into sequences of predefined robotic actions. Instead of having the LLM generate code or trajectories directly, we restrict it to choosing from modular commands like “pick_up,” “go_to,” and “drop_to.” These high-level actions are then executed by a Kinova Gen3 arm in a Gazebo simulation, guided by established motion planning tools like MoveIt. This setup allows the LLM to focus on natural language comprehension and logical planning while the proven robotic trajectory commander like MoveIt handles the complexity of execution. The approach is relatively new in that it integrates LLM-driven reasoning with fixed, reliable action “building blocks” and continuously updated environmental information via ROS, ultimately making the system more robust, flexible, and practical for real-world applications.
 </p>
 
 <p>
@@ -190,10 +211,7 @@ This coupled with the time and resource-intensive data collection for the VAE le
 </p>
 
 <p>
-One problem we encountered was that the LLM doesn't always do the task sequencing completely (in one trial with Gemini, it forgot to add a second slice of bread).
-The opposite problem also occurred, where it added a sequence too completely (it used all available objects to a sandwich sequence,
-combining peanut butter and jelly with ham, mustard, and pickles). It seems that without very careful prompting, the LLM is susceptible to
-both logic errors and not using "common sense" reasoning.
+  In the initial idea of this framework, we want to integrate the LLMs and Variational autoencoder (VAE) to directly generate trajectories for the manipulator to execute. However, we found out it is time-consuming to collect data to train the VAE, and the LLMs are not reliable when they are asked to generate continuous trajectories, and it is hard to let the model understand all the spatial information. Hence, we decided to run the current approach at a very early stage since this problem is predictable. The other problem we encountered was we initially wanted to make the responses from the LLMs in JSON form in order to unify the output format. However, it actually makes it hard to write a Python script to read the output, so we decided to make the response in Python list format.
 </p>
 
 <hr>
@@ -277,12 +295,25 @@ While the Claude AI came up with a logical action sequence, its final sandwich c
 
 <h2 id="conclusion">Conclustion and Future Work</h2>
 <p>
-
-  TBD
   <!-- How easily are your results able to be reproduced by others?
   Did your dataset or annotation affect other people's choice of research or development projects to undertake?
   Does your work have potential harm or risk to our society? What kinds? If so, how can you address them?
   What limitations does your model have? How can you extend your work for future research? -->
+  <h4>Reproducibility</h4>
+  To reproduce our results, we've posted our code to our GitHub repository (see code link above)
+  
+  <h4>Dataset</h4>
+  Using the RLBench dataset with LLMs opens the door to research into testing robotic systems on tasks with greater complexity. 
+  Future research could delve into designing more complex tasks and integrating them with the RLBench framework and LLMs.
+
+  <h4>Ethical Concerns</h4>
+  Integrating human speech and LLMs into robot commands introduces the possibility for harmful errors, biases, and potentially malicious actions.
+  One potential way to mitigate these concerns is with improved error-handling and developing policy-based filters.
+
+  <h4>Limitations</h4>
+  There appeared to be a limit to the amount of environment information that could be placed into the system prompt without
+  causing the smaller LLMs to use object locations from the wrong task. Further research could study the limitations of 
+  system prompts, which may be a function of model parameter size, for robot tasks.
 </p>
 
 
